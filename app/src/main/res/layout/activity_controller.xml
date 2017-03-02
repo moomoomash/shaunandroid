@@ -61,4 +61,13 @@
             android:layout_below="@+id/ButtonDown"
             android:layout_alignEnd="@+id/ButtonRight"
             android:layout_marginTop="197dp" />
+
+        <TextView
+            android:text="BT Status Check"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_above="@+id/ButtonRight"
+            android:layout_toEndOf="@+id/ButtonRight"
+            android:layout_marginStart="135dp"
+            android:id="@+id/btStatus"/>
 </RelativeLayout>

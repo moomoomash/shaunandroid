@@ -51,19 +51,19 @@ public class AppServiceController extends Application {
                     switch (msg.arg1) {
                         case MyService.STATE_CONNECTED:
                             input="Successfully connected";
-                            BluetoothUI.mBluetoothStatus.setText("Successfully connected!");
+                            //BluetoothUI.mBluetoothStatus.setText("Successfully connected!");
                             //mBluetoothStatus.setText("Successfully connected to: "+ MyService.mConnectedDeviceName);
                             //setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
                             //mConversationArrayAdapter.clear();
                             break;
                         case MyService.STATE_CONNECTING:
                             input="Connection in progress";
-                            BluetoothUI.mBluetoothStatus.setText("Connection in progress");
+                            //BluetoothUI.mBluetoothStatus.setText("Connection in progress");
                             break;
                         ///case STATE_LISTEN:
                         case MyService.STATE_NONE:
                             input="Disconnected";
-                            BluetoothUI.mBluetoothStatus.setText("Disconnected!");
+                            //BluetoothUI.mBluetoothStatus.setText("Disconnected!");
                             break;
                     }
                     break;

@@ -41,7 +41,7 @@ public class BluetoothUI extends AppCompatActivity{
     // GUI Components
     public final static String EXTRA_MESSAGE = "com.example.shaun.MESSAGE";
     //BluetoothAdapter mBluetoothAdapter;
-    public static TextView mBluetoothStatus;
+    public TextView mBluetoothStatus;
     private ListView mDevicesListView;
     private ListView mChatListView;
     private static final String TAG = "BluetoothService";
@@ -112,73 +112,78 @@ public class BluetoothUI extends AppCompatActivity{
         //    mBluetoothStatus.setText("Bluetooth OFF");
        // }
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
 
     /**
      * The Handler that gets information
      */
-    public final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            AppCompatActivity activity = BluetoothUI.this;
-            //setSupportActionBar(MainActivity);
-            // getSupportActionBar().setDisplayShowHomeEnabled(true);
-            switch (msg.what) {
-                case MessageConstants.MESSAGE_STATE_CHANGE:
-                    switch (msg.arg1) {
-                        case STATE_CONNECTED:
-                            mBluetoothStatus.setText("Successfully connected to: "+ mConnectedDeviceName);
-                            //setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
-                            mConversationArrayAdapter.clear();
-                            break;
-                        case STATE_CONNECTING:
-                            mBluetoothStatus.setText("Connection in progress");
-                            break;
-                        ///case STATE_LISTEN:
-                        case STATE_NONE:
-                            mBluetoothStatus.setText("Disconnected!");
-                            break;
-                    }
-                    break;
-                case MessageConstants.MESSAGE_WRITE:
-                    byte[] writeBuf = (byte[]) msg.obj;
-                    // construct a string from the buffer
-                    String writeMessage = new String(writeBuf);
-                    mConversationArrayAdapter.add("Me:  " + writeMessage);
-                    mConversationArrayAdapter.notifyDataSetChanged();
-                    break;
-                case MessageConstants.MESSAGE_READ:
-                    byte[] readBuf = (byte[]) msg.obj;
-                    // construct a string from the valid bytes in the buffer
-                    String readMessage = new String(readBuf, 0, msg.arg1);
-                    mConversationArrayAdapter.add(mConnectedDeviceName+ ":  " + readMessage);
-                    mConversationArrayAdapter.notifyDataSetChanged();
-                    Log.d(TAG, readMessage);
-                    Toast.makeText(getApplicationContext(),readMessage, Toast.LENGTH_SHORT).show();
-                    break;
-                case MessageConstants.MESSAGE_DEVICE_NAME:
-                    // save the connected device's name
-                    mConnectedDeviceName = msg.getData().getString(MessageConstants.DEVICE_NAME);
-                    if (null != activity) {
-                        Toast.makeText(activity, "Connected to "
-                                + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                case MessageConstants.MESSAGE_TOAST:
-                    if (null != activity) {
-                        Toast.makeText(activity, msg.getData().getString(MessageConstants.TOAST),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                    break;
+//    public final Handler mHandler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            AppCompatActivity activity = BluetoothUI.this;
+//            //setSupportActionBar(MainActivity);
+//            // getSupportActionBar().setDisplayShowHomeEnabled(true);
+//            switch (msg.what) {
+//                case MessageConstants.MESSAGE_STATE_CHANGE:
+//                    switch (msg.arg1) {
+//                        case STATE_CONNECTED:
+//                            mBluetoothStatus.setText("Successfully connected to: "+ mConnectedDeviceName);
+//                            //setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
+//                            mConversationArrayAdapter.clear();
+//                            break;
+//                        case STATE_CONNECTING:
+//                            mBluetoothStatus.setText("Connection in progress");
+//                            break;
+//                        ///case STATE_LISTEN:
+//                        case STATE_NONE:
+//                            mBluetoothStatus.setText("Disconnected!");
+//                            break;
+//                    }
+//                    break;
+//                case MessageConstants.MESSAGE_WRITE:
+//                    byte[] writeBuf = (byte[]) msg.obj;
+//                    // construct a string from the buffer
+//                    String writeMessage = new String(writeBuf);
+//                    mConversationArrayAdapter.add("Me:  " + writeMessage);
+//                    mConversationArrayAdapter.notifyDataSetChanged();
+//                    break;
+//                case MessageConstants.MESSAGE_READ:
+//                    byte[] readBuf = (byte[]) msg.obj;
+//                    // construct a string from the valid bytes in the buffer
+//                    String readMessage = new String(readBuf, 0, msg.arg1);
+//                    mConversationArrayAdapter.add(mConnectedDeviceName+ ":  " + readMessage);
+//                    mConversationArrayAdapter.notifyDataSetChanged();
+//                    Log.d(TAG, readMessage);
+//                    Toast.makeText(getApplicationContext(),readMessage, Toast.LENGTH_SHORT).show();
+//                    break;
+//                case MessageConstants.MESSAGE_DEVICE_NAME:
+//                    // save the connected device's name
+//                    mConnectedDeviceName = msg.getData().getString(MessageConstants.DEVICE_NAME);
+//                    if (null != activity) {
+//                        Toast.makeText(activity, "Connected to "
+//                                + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+//                    }
+//                    break;
+//                case MessageConstants.MESSAGE_TOAST:
+//                    if (null != activity) {
+//                        Toast.makeText(activity, msg.getData().getString(MessageConstants.TOAST),
+//                                Toast.LENGTH_SHORT).show();
+//                    }
+//                    break;
 //                case MessageConstants.MESSAGE_CONTROL:
 //                    byte[] controlBuf = (byte[]) msg.obj;
 //                    // construct a string from the buffer
 //                    String controlMessage = new String(controlBuf);
 //                    mConversationArrayAdapter.add("Me:  " + controlMessage);
 //                    mConversationArrayAdapter.notifyDataSetChanged();
-//                    break;
-            }
-        }
-    };
+////                    break;
+//            }
+//        }
+//    };
 
     //Methods
     //Bluetooth on clicked
@@ -292,9 +297,11 @@ public class BluetoothUI extends AppCompatActivity{
             BTServ.setBTState(BluetoothService.STATE_CONNECTING);
             BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
             Toast.makeText(getBaseContext(), address, Toast.LENGTH_LONG).show();
-            mBluetoothStatus.setText("Test");
+            mBluetoothStatus.setText("Connecting to:"+device.getName());
             BTServ.connect(device);
-
+            if (BTServ.STATE_CONNECTED==STATE_CONNECTED) {
+                mBluetoothStatus.setText("Connected to: "+device.getName());
+            }
         }
     };
 
@@ -319,7 +326,7 @@ public class BluetoothUI extends AppCompatActivity{
 //        //RobotControl RC = new RobotControl();
 //        Intent intent = new Intent(this, MainActivity.class);
 //        startActivity(intent);
-        //finish();
+        finish();
     }
 
 //        intent.putExtra(EXTRA_MESSAGE, message);

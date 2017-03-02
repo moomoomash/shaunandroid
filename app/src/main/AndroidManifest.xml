@@ -12,15 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat"
         android:name=".AppServiceController">
-        <activity android:name=".MainActivity">
-            <activity android:launchmode="singleTask"/>
+        <activity android:name=".MainActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".DisplayMessageActivity" />
-        <activity android:name=".RobotControl"></>
+        <activity android:name=".RobotControl"/>
         <activity android:name=".BluetoothService" />
         <activity android:name=".BluetoothUI" />
 

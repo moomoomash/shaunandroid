@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private Button right;
     private Button forward;
     private Button backward;
-
+    public TextView mBTStatus;
 //    private Button button_bt_settings;
     private MyService mService;
     private boolean mBound;
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_controller);
         setupControl();
         BluetoothUI BTui = new BluetoothUI();
+        AppServiceController.getInstance().startService();
 //        if (savedInstanceState == null) {
 //            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 //            BluetoothUI fragment = new BluetoothUI();
@@ -119,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendControl(String input){
-        if (mBound) {
             if (input.length() > 0) {
                 // Get the message bytes and tell the BluetoothChatService to write
                 //this.write(send);
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 //            btServ.write("lolll".getBytes());
                 mService.write(input.getBytes());
             }
-        }
+
     }
 
     @Override
@@ -136,11 +136,12 @@ public class MainActivity extends AppCompatActivity {
 //        Intent intent = new Intent(this, MyService.class);
 //        startService(intent);
 //        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-        AppServiceController.getInstance().startService();
+
         mService = AppServiceController.getInstance().getService();
         if (mService.getBTState()==mService.STATE_CONNECTED)
         {
-
+            mBTStatus = (TextView)findViewById(R.id.btStatus);
+            mBTStatus.setText("Connected to: "+mService.mConnectedDeviceName);
         }
     }
 //    private ServiceConnection mConnection = new ServiceConnection() {
