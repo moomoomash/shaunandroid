@@ -180,7 +180,7 @@ public class BluetoothService extends AppCompatActivity {
                     mConversationArrayAdapter.notifyDataSetChanged();
                     Log.d(TAG, readMessage);
                     Toast.makeText(getApplicationContext(),readMessage, Toast.LENGTH_SHORT).show();
-                    break;
+
                 case MessageConstants.MESSAGE_DEVICE_NAME:
                     // save the connected device's name
                     mConnectedDeviceName = msg.getData().getString(MessageConstants.DEVICE_NAME);

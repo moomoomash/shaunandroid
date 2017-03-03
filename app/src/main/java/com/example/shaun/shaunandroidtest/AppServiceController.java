@@ -79,11 +79,15 @@ public class AppServiceController extends Application {
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
+                    System.out.println(readMessage);
                     BluetoothUI.mConversationArrayAdapter.add(mService.mConnectedDeviceName+ ":  " + readMessage);
                     BluetoothUI.mConversationArrayAdapter.notifyDataSetChanged();
-                    //Log.d(TAG, readMessage);
                     Toast.makeText(getApplicationContext(),readMessage, Toast.LENGTH_SHORT).show();
                     input=readMessage;
+                    if(readMessage.contains("status")){
+                        System.out.println(readMessage);
+                        MainActivity.getInstance().updateRobotStatus(readMessage);
+                    }
                     break;
                 case MyService.MessageConstants.MESSAGE_DEVICE_NAME:
                     // save the connected device's name
