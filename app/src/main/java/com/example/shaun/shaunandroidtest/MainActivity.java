@@ -19,6 +19,8 @@ import java.util.Timer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.lang.Thread.*;
+
 public class MainActivity extends AppCompatActivity {
 //    RobotControl rc = new RobotControl();
 
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private Button turnRight;
     private Button fast;
     private Button explore;
+
+    public static String statusMesg="";
     public TextView mBTStatus;
     public TextView mRobotStatus;
     //public ArrayAdapter<String> mRobotStatusAdapter;
@@ -55,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         AppServiceController.getInstance().startService();
         mInstance = this;
         mRobotStatus = (TextView)findViewById(R.id.robotStatus);
+
 //        if (savedInstanceState == null) {
 //            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 //            BluetoothUI fragment = new BluetoothUI();
@@ -193,6 +198,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void sendStartCoordinate(int input){
+        if (input!=-1) {
+            // Get the message bytes and tell the BluetoothChatService to write
+            //this.write(send);
+//            BTui.write(input.getBytes());
+//            btServ.write("lolll".getBytes());
+            //mService.write(input.toBytes());
+//            byte[] b;
+//            b[0]=input;
+//            input=b[0];
+//            Byte b = new Byte(input);
+//            int i = b.intValue();
+
+            //mService.write(b.getBytes());
+        }
+
+    }
+
     @Override
     public void onStart(){
         super.onStart();
@@ -244,9 +267,11 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(intent);
     }
 
-    public void updateRobotStatus(String toThis) {
+    public  synchronized void updateRobotStatus(String toThis) {
+        System.out.println(toThis);
         mRobotStatus.invalidate();
-        mRobotStatus.setText(toThis);
+        mRobotStatus.setText(statusMesg);
     }
+
 
 }

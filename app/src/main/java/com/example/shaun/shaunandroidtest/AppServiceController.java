@@ -13,6 +13,10 @@ import android.util.Log;
 import android.app.Activity;
 import android.widget.Toast;
 
+import java.math.BigInteger;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by truedemon on 2/3/2017.
  */
@@ -82,11 +86,56 @@ public class AppServiceController extends Application {
                     System.out.println(readMessage);
                     BluetoothUI.mConversationArrayAdapter.add(mService.mConnectedDeviceName+ ":  " + readMessage);
                     BluetoothUI.mConversationArrayAdapter.notifyDataSetChanged();
-                    Toast.makeText(getApplicationContext(),readMessage, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),readMessage, Toast.LENGTH_SHORT).show();
                     input=readMessage;
+
                     if(readMessage.contains("status")){
                         System.out.println(readMessage);
-                        MainActivity.getInstance().updateRobotStatus(readMessage);
+                        //MainActivity.getInstance().updateRobotStatus(readMessage);
+                        if(readMessage.contains("exploring")){
+                            MainActivity.statusMesg="exploring";
+                            MainActivity.getInstance().updateRobotStatus("exploring");
+                        }
+//                            mHandler.postDelayed(new Runnable()
+//                            {
+//                                public void run()
+//                                {
+//
+// MainActivity.getInstance().updateRobotStatus("exploring");// Actions to do after 3 seconds
+//                                }
+//                            }, 800);
+//
+//                        }
+                        if(readMessage.contains("fastest path")){
+                            MainActivity.statusMesg="fastest path";
+                            //MainActivity.getInstance().updateRobotStatus("fastest path");
+                            MainActivity.getInstance().updateRobotStatus("fastest path");
+                        }
+                        if(readMessage.contains("turning left")){
+                            MainActivity.statusMesg="turning left";
+                            //MainActivity.getInstance().updateRobotStatus("turning left");
+                            MainActivity.getInstance().updateRobotStatus("turning left");
+                        }
+                        if(readMessage.contains("turning right")){
+                            MainActivity.statusMesg="turning right";
+                            //MainActivity.getInstance().updateRobotStatus("turning right");
+                            MainActivity.getInstance().updateRobotStatus("TURNING RIGHT");
+                        }
+                        if(readMessage.contains("moving forward")){
+                            MainActivity.statusMesg="moving forward";
+                            //MainActivity.getInstance().updateRobotStatus("moving forward");
+                            MainActivity.getInstance().updateRobotStatus("MOVING FORWARD");
+                        }
+                        if(readMessage.contains("reversing")){
+                            MainActivity.statusMesg="reversing";
+                            //MainActivity.getInstance().updateRobotStatus("reversing");
+                            MainActivity.getInstance().updateRobotStatus("REVERSING");
+                        }
+                    }
+                    if(readMessage.length()==75)
+                    {
+                        String mapData = toBinary(readMessage);
+                        System.out.println(mapData);
                     }
                     break;
                 case MyService.MessageConstants.MESSAGE_DEVICE_NAME:
@@ -124,6 +173,9 @@ public class AppServiceController extends Application {
         //stop service
     }
 
+    public String toBinary(String hex) {
+        return new BigInteger("1" + hex, 16).toString(2).substring(1);
+    }
     public String getMessage(){
         return input;
     }
